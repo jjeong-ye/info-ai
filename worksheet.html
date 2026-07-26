@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>인공지능 학습지 · 중학교 정보</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap" />
+  <link rel="stylesheet" href="worksheet.css" />
+</head>
+<body>
+  <!-- 화면 전용 도구막대 (인쇄 시 숨김) -->
+  <div class="toolbar no-print" id="toolbar">
+    <div class="tb-inner">
+      <strong class="tb-title">🖍️ 인공지능 학습지</strong>
+      <span class="tb-label">중단원 선택</span>
+      <div class="tb-btns" id="pickers"></div>
+      <label class="tb-ans"><input type="checkbox" id="ansToggle" /> 정답 보기(교사용)</label>
+      <button class="tb-print" id="printBtn">🖨 인쇄 / PDF 저장</button>
+    </div>
+    <div class="tb-tip">💡 인쇄가 예쁘게 나오려면: 인쇄 창에서 <b>용지 A4</b>, <b>여백 기본</b>, <b>배경 그래픽 끄기</b>를 권장해요.</div>
+  </div>
+
+  <main id="sheet"></main>
+
+  <script src="data.js"></script>
+  <script src="worksheet.js"></script>
+</body>
+</html>
