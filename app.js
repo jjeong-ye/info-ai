@@ -28,18 +28,31 @@
   U.subchapters.forEach(function (s) { panels.push(renderSub(s)); });
   if (U.final) panels.push(renderFinal());
   mainEl.innerHTML = panels.join("");
-  document.querySelector(".panel").classList.add("active");
+  var firstPanel = document.querySelector(".panel");
+  if (firstPanel) firstPanel.classList.add("active");
 
   /* ---------- 탭 전환 ---------- */
   tabsEl.addEventListener("click", function (e) {
     var btn = e.target.closest(".tab-btn");
     if (!btn) return;
     var target = btn.getAttribute("data-target");
-    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+    var panel = document.getElementById("panel-" + target);
+    if (!panel) return; // 존재하지 않는 탭이면 화면을 건드리지 않는다
+    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); b.setAttribute("aria-selected", "false"); });
     btn.classList.add("active");
+    btn.setAttribute("aria-selected", "true");
     document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
-    document.getElementById("panel-" + target).classList.add("active");
+    panel.classList.add("active");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  /* ---------- 안내 카드·탭 키보드 조작 (Enter·Space) ---------- */
+  mainEl.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+    var mc = e.target.closest && e.target.closest(".map-card");
+    if (!mc) return;
+    e.preventDefault();
+    mc.click();
   });
 
   /* ---------- 퀴즈 상호작용 ---------- */
@@ -63,7 +76,7 @@
   /* ---------- 안내 패널 ---------- */
   function renderIntro() {
     var m = U.intro.map.map(function (x) {
-      return '<div class="map-card" data-goto="' + goId(x.num) + '">' +
+      return '<div class="map-card" data-goto="' + goId(x.num) + '" role="button" tabindex="0" aria-label="' + esc(x.title) + '">' +
         '<span class="mnum">' + esc(x.num) + "</span>" +
         "<h4>" + esc(x.title) + "</h4><p>" + esc(x.desc) + "</p></div>";
     }).join("");
