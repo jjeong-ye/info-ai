@@ -112,7 +112,7 @@
       return '<div class="xt-row"><b>' + esc(r.concept) + "</b><span>" + esc(r.variants) + "</span></div>";
     }).join("");
     return '<details class="card teacher-fold" style="margin-top:18px">' +
-      '<summary class="fold-bar"><span class="t-badge">통합</span>' +
+      '<summary class="fold-bar"><span class="t-badge">공통</span>' +
       '<span class="fold-label">어느 학교에서든 쓸 수 있어요 — 교과서별 용어 대응</span>' +
       '<span class="fold-hint">눌러서 펼치기</span>' +
       '<span class="fold-arrow" aria-hidden="true">▾</span></summary>' +
