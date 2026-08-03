@@ -345,29 +345,36 @@ main { max-width: 880px; margin: 0 auto; padding: 30px clamp(14px, 4vw, 24px) 74
 .xt-row span { color: var(--ink); font-size: 14.5px; line-height: 1.65; }
 @media (max-width: 560px) { .xt-row { grid-template-columns: 1fr; gap: 3px; } }
 
-footer { text-align:center; color: var(--ink-soft); font-size: 13px; padding: 26px 16px 46px; border-top: 5px solid var(--yellow); margin-top: 26px; }
-footer .note { max-width: 720px; margin: 0 auto; }
-.print-link { display:inline-block; background: var(--red); color:#fff; text-decoration:none; font-weight:700; font-size:14px; padding:9px 18px; border-radius:999px; }
-.print-link:hover { background: var(--red-deep); }
-
-/* ============================================================
-   ▼ 접근성 보강 (교실 활용 업그레이드)
-   ============================================================ */
-
-/* 1) 키보드 포커스가 '보이게' */
-a:focus-visible,
-button:focus-visible,
-.tab-btn:focus-visible,
-.choice:focus-visible,
-.map-card:focus-visible,
-.wb-item:focus-visible,
-.tl-btn:focus-visible,
-summary:focus-visible {
-  outline: 3px solid #1b5fd0;
-  outline-offset: 2px;
-  border-radius: 6px;
+footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+  padding: 28px 16px 46px;
+  border-top: 5px solid var(--yellow);
+  margin-top: 26px;
 }
+footer .note { max-width: 860px; margin: 0 auto; }
+footer .note > p { margin: 0 0 14px !important; }
+footer .maker { margin-top: 4px; }
+.print-link {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  box-shadow: 0 2px 0 rgba(160, 47, 35, .12);
+}
+.print-link:hover { background: var(--red-deep); transform: translateY(-1px); }
 
-/* 2) 확인 문제 정답/오답을 '색'만이 아니라 기호로도 구분 — 색각 이상 학생 배려 */
-.choice.correct::after { content: " ✓ 정답"; font-weight: 800; margin-left: 6px; }
-.choice.wrong::after   { content: " ✕"; font-weight: 800; margin-left: 6px; }
+
+/* 성취기준 표시 */
+.standard-card { border-left: 5px solid var(--accent, #6c63ff); }
+.std-list { margin: 10px 0 0; padding-left: 22px; display: grid; gap: 8px; line-height: 1.65; }
+.std-box { margin: 14px 0 18px; padding: 13px 16px; border-radius: 14px; background: #f3f0ff; border: 1px solid #d9d2ff; display: flex; gap: 10px; align-items: flex-start; line-height: 1.55; }
+.std-box b { flex: 0 0 auto; color: #5948b8; }
+.std-box span { color: var(--ink, #263238); }
+.mstd { display: inline-block; margin-top: 8px; padding: 4px 8px; border-radius: 999px; background: #f1eeff; color: #5f4bbb; font-size: 12px; font-weight: 800; }
+@media (max-width: 640px) { .std-box { flex-direction: column; gap: 4px; } }

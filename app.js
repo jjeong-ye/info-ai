@@ -28,31 +28,18 @@
   U.subchapters.forEach(function (s) { panels.push(renderSub(s)); });
   if (U.final) panels.push(renderFinal());
   mainEl.innerHTML = panels.join("");
-  var firstPanel = document.querySelector(".panel");
-  if (firstPanel) firstPanel.classList.add("active");
+  document.querySelector(".panel").classList.add("active");
 
   /* ---------- 탭 전환 ---------- */
   tabsEl.addEventListener("click", function (e) {
     var btn = e.target.closest(".tab-btn");
     if (!btn) return;
     var target = btn.getAttribute("data-target");
-    var panel = document.getElementById("panel-" + target);
-    if (!panel) return; // 존재하지 않는 탭이면 화면을 건드리지 않는다
-    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); b.setAttribute("aria-selected", "false"); });
+    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
     btn.classList.add("active");
-    btn.setAttribute("aria-selected", "true");
     document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
-    panel.classList.add("active");
+    document.getElementById("panel-" + target).classList.add("active");
     window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  /* ---------- 안내 카드·탭 키보드 조작 (Enter·Space) ---------- */
-  mainEl.addEventListener("keydown", function (e) {
-    if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
-    var mc = e.target.closest && e.target.closest(".map-card");
-    if (!mc) return;
-    e.preventDefault();
-    mc.click();
   });
 
   /* ---------- 퀴즈 상호작용 ---------- */
@@ -76,9 +63,10 @@
   /* ---------- 안내 패널 ---------- */
   function renderIntro() {
     var m = U.intro.map.map(function (x) {
-      return '<div class="map-card" data-goto="' + goId(x.num) + '" role="button" tabindex="0" aria-label="' + esc(x.title) + '">' +
+      return '<div class="map-card" data-goto="' + goId(x.num) + '">' +
         '<span class="mnum">' + esc(x.num) + "</span>" +
-        "<h4>" + esc(x.title) + "</h4><p>" + esc(x.desc) + "</p></div>";
+        "<h4>" + esc(x.title) + "</h4><p>" + esc(x.desc) + "</p>" +
+        (x.std ? '<span class="mstd">' + esc(x.std) + '</span>' : '') + "</div>";
     }).join("");
     var use = (U.intro.howToUse || []).map(function (x) {
       return '<div class="how-step"><span class="hnum">' + esc(x.n) + "</span><div><b>" +
@@ -90,6 +78,7 @@
       '<div class="sub">' + esc(U.unitSubtitle) + "</div></div>" +
       '<div class="hero-quote">' + esc(U.intro.hook) +
       '<div class="big">' + esc(U.intro.bigQuestion) + "</div></div>" +
+      renderStandards(U.intro.standards) +
       (use ? '<details class="card usecard teacher-fold">' +
         '<summary class="fold-bar"><span class="t-badge">교사용</span>' +
         '<span class="fold-label">이 사이트로 수업하는 방법</span>' +
@@ -104,6 +93,12 @@
       "</section>";
   }
 
+  function renderStandards(list) {
+    if (!list || !list.length) return "";
+    return '<div class="card standard-card"><h3><span class="ico">🎯</span>2022 개정 교육과정 성취기준</h3>' +
+      '<ul class="std-list">' + list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+  }
+
   /* 어느 학교에서든 — 교과서별 용어 대응 */
   function renderNeutral() {
     var nu = U.intro.neutral;
@@ -112,7 +107,7 @@
       return '<div class="xt-row"><b>' + esc(r.concept) + "</b><span>" + esc(r.variants) + "</span></div>";
     }).join("");
     return '<details class="card teacher-fold" style="margin-top:18px">' +
-      '<summary class="fold-bar"><span class="t-badge">공통</span>' +
+      '<summary class="fold-bar"><span class="t-badge">통합</span>' +
       '<span class="fold-label">어느 학교에서든 쓸 수 있어요 — 교과서별 용어 대응</span>' +
       '<span class="fold-hint">눌러서 펼치기</span>' +
       '<span class="fold-arrow" aria-hidden="true">▾</span></summary>' +
@@ -253,6 +248,7 @@
     html += '<div class="sub-head"><span class="eyebrow">중단원 ' + esc(s.num) + "</span>" +
       "<h2>" + esc(s.title) + "</h2>" +
       '<div class="sub">' + esc(s.subtitle) + "</div></div>";
+    if (s.standard) html += '<div class="std-box"><b>성취기준</b><span>' + esc(s.standard) + '</span></div>';
 
     /* 핵심 한 문장 */
     if (s.bigIdea) {
